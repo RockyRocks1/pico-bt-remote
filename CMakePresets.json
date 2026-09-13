@@ -1,0 +1,69 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "pico-config",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/pico",
+      "cacheVariables": {
+        "BUILD_PICO_TARGET": "ON",
+        "PICO_BOARD": "pico2_w",
+        "PICO_SDK_VERSION_STRING": "2.1.1",
+        "PICO_PLATFORM": "rp2350-arm-s",
+        "PICO_TOOLCHAIN_PATH": "$env{PICO_TOOLCHAIN_PATH}",
+        "PICO_SDK_FETCH_FROM_GIT": "ON"
+      }
+    },
+    {
+      "name": "controller-config",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/controller",
+      "cacheVariables": {
+        "BUILD_PICO_TARGET": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "controller-build",
+      "configurePreset": "controller-config"
+    },
+    {
+      "name": "pico-build",
+      "configurePreset": "pico-config"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "build-controller",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "controller-config"
+        },
+        {
+          "type": "build",
+          "name": "controller-build"
+        }
+      ]
+    },
+    {
+      "name": "build-pico",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "pico-config"
+        },
+        {
+          "type": "build",
+          "name": "pico-build"
+        }
+      ]
+    }
+  ]
+}

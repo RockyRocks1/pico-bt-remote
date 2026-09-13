@@ -1,15 +1,10 @@
 cmake_minimum_required(VERSION 3.20)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../out/pico")
-set(PICO_BOARD pico2_w CACHE STRING "Board type")
-
-set(PICO_SDK_FETCH_FROM_GIT ON CACHE BOOL "Fetch SDK from git")
-set(PICO_SDK_VERSION_STRING "2.1.1" CACHE STRING "Pico SDK version")
-
 include(pico_sdk_import.cmake)
 
 project(pico-bt-remote C CXX ASM)
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 pico_sdk_init()
 
