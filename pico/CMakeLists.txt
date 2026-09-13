@@ -16,6 +16,7 @@ pico_sdk_init()
 add_executable(${PROJECT_NAME}
     main.cpp
     BlePico.cpp
+    InputManager.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE 

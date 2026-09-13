@@ -37,7 +37,7 @@ union HidPayload {
     KeyboardPayload keyboard;
 };
 struct UsbPacket {
-    uint8_t command;
+    DeviceCommand command;
     HidPayload data;
 };
 #pragma pack(pop)
