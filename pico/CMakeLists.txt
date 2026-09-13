@@ -15,8 +15,9 @@ pico_sdk_init()
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    BlePico.cpp
+    BleManager.cpp
     InputManager.cpp
+    UsbStreamListener.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
