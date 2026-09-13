@@ -22,8 +22,8 @@ enum ModifierKey : uint8_t {
 };
 struct MousePayload {
     uint8_t buttonMask;
-    int8_t relativeX;
-    int8_t relativeY;
+    int16_t relativeX;
+    int16_t relativeY;
     int8_t relativeWheel;
 };
 struct KeyboardPayload {

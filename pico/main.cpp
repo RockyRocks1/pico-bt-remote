@@ -1,20 +1,15 @@
-#include <stdio.h>
-#include "pico/stdlib.h"
-#include "pico/cyw43_arch.h"
+#include "pico/stdio.h"
+#include "BlePico.hpp"
 
 int main() {
     stdio_init_all();
-    
-    if (cyw43_arch_init()) {
-        printf("Failed to initialize wireless architecture\n");
+
+    if (cyw43_arch_init())
         return -1;
-    }
 
-    while (true) {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
-        sleep_ms(20);
+    BlePico* blePico = BlePico::GetInstance();
+    blePico->Initialize();
+    blePico->RunExecutionLoop();
 
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
-        sleep_ms(10);
-    }
+    return 0;
 }
