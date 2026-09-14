@@ -4,7 +4,7 @@ static const uint8_t hidReportDescriptor[] = {
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
     0x09, 0x02,                    // USAGE (Mouse)
     0xa1, 0x01,                    // COLLECTION (Application)
-    0x85, 0x01,                    //   REPORT_ID (1)
+    0x85, 0x01,                    // Report ID 1
     0x09, 0x01,                    //   USAGE (Pointer)
     0xa1, 0x00,                    //   COLLECTION (Physical)
     0x05, 0x09,                    //     USAGE_PAGE (Button)
@@ -27,7 +27,7 @@ static const uint8_t hidReportDescriptor[] = {
     0x95, 0x02,                    //     REPORT_COUNT (2)
     0x81, 0x06,                    //     INPUT (Data,Var,Rel)
     0xc0,                          //   END_COLLECTION
-    0xc0                           // END_COLLECTION
+    0xc0
 }; // temporary, from the btstack example
 
 // also temporary

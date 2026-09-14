@@ -5,7 +5,7 @@ void UsbStreamListener::PollStreamAndPipeTo(InputManager& inputManager) {
         uint8_t* packetBuffer = reinterpret_cast<uint8_t*>(&m_incomingPacket);
 
         int byteIn = getchar_timeout_us(0);
-        if (byteIn == PICO_ERROR_TIMEOUT)
+        if (byteIn == -2)
             break;
 
         packetBuffer[m_bytesRead++] = static_cast<uint8_t>(byteIn);

@@ -1,6 +1,5 @@
 #pragma once
 #include "pico/stdio.h"
-#include "pico/error.h"
 #include "InputManager.hpp"
 
 class UsbStreamListener {

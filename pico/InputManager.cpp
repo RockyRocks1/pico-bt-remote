@@ -4,20 +4,20 @@
 void InputManager::ProcessMousePayload(MousePayload& mouse) {
 	int16_t accumulativeX = mouse.relativeX;
 	int16_t accumulativeY = mouse.relativeY;
-
-	while (accumulativeX != 0 || accumulativeY != 0) {
+	const int8_t MAX_STEP = 12;
+	do {
 		int8_t relativeX = accumulativeX;
-		if (accumulativeX > 127)
-			relativeX = 127;
-		else if (accumulativeX < -127)
-			relativeX = -127;
+		if (accumulativeX > MAX_STEP)
+			relativeX = MAX_STEP;
+		else if (accumulativeX < -MAX_STEP)
+			relativeX = -MAX_STEP;
 		accumulativeX -= relativeX;
 
 		int8_t relativeY = accumulativeY;
-		if (accumulativeY > 127)
-			relativeY = 127;
-		else if (accumulativeY < -127)
-			relativeY = -127;
+		if (accumulativeY > MAX_STEP)
+			relativeY = MAX_STEP;
+		else if (accumulativeY < -MAX_STEP)
+			relativeY = -MAX_STEP;
 		accumulativeY -= relativeY;
 
 		MousePayload trueMouse = {
@@ -30,7 +30,7 @@ void InputManager::ProcessMousePayload(MousePayload& mouse) {
 		packet.command = DeviceCommand::CMD_MOUSE_REPORT;
 		packet.data.mouse = trueMouse;
 		m_packetQueue.push_back(packet);
-	};
+	} while (accumulativeX != 0 || accumulativeY != 0);
 }
 void InputManager::ProcessKeyboardPayload(KeyboardPayload& keyboard) {
 	UsbPacket packet{};

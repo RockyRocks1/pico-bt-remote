@@ -6,7 +6,7 @@
 class UsbStreamWriter {
 public:
 	bool Open(const std::string& portName, uint32_t baudRate);
-	void Write(const UsbPacket& packet);
+	bool Write(const UsbPacket& packet);
 	inline HANDLE GetHandle() const noexcept {
 		return m_portHandle;
 	}
