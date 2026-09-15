@@ -1,0 +1,18 @@
+
+*{
+    padding: 0;
+    margin: 0
+}
+#root {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fit-container {
+    width: 100%;
+    height: 100%
+}
+.main-color {
+    background-color: rgb(216 216 216)
+}

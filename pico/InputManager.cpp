@@ -4,7 +4,7 @@
 void InputManager::ProcessMousePayload(MousePayload& mouse) {
 	int16_t accumulativeX = mouse.relativeX;
 	int16_t accumulativeY = mouse.relativeY;
-	const int8_t MAX_STEP = 12;
+	const int8_t MAX_STEP = 127;
 	do {
 		int8_t relativeX = accumulativeX;
 		if (accumulativeX > MAX_STEP)
