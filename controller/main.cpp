@@ -5,37 +5,20 @@
 void StartCalibrationTest(UsbStreamWriter& writer) {
     const int startStep = 1;
     const int endStep = 127;
-    const int sleepTime = 20;
+    const int sleepTime = 100;
     for (int currentStep = startStep; currentStep <= endStep; currentStep++) {
         UsbPacket mousePacket{};
         mousePacket.command = CMD_MOUSE_REPORT;
-
         mousePacket.data.mouse.buttonMask = 0;
+        mousePacket.data.mouse.relativeY = 0;
+
         mousePacket.data.mouse.relativeX = -endStep;
         writer.Write(mousePacket);
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     
-        mousePacket.data.mouse.relativeX = 0;
-        mousePacket.data.mouse.buttonMask = 1;
-        writer.Write(mousePacket);
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-
         mousePacket.data.mouse.relativeX = currentStep;
-        mousePacket.data.mouse.buttonMask = 1;
         writer.Write(mousePacket);
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-
-        mousePacket.data.mouse.relativeX = 0;
-        mousePacket.data.mouse.buttonMask = 0;
-        writer.Write(mousePacket);
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-
-        mousePacket.data.mouse.buttonMask = 1;
-        writer.Write(mousePacket);
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-
-        mousePacket.data.mouse.buttonMask = 0;
-        writer.Write(mousePacket);
     };
 }
 

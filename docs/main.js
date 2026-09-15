@@ -2,13 +2,13 @@ const root = document.getElementById("root");
 const calibrationButton = document.getElementById("calibration-btn")
 const outputParagraph = document.getElementById("output");
 
-function getNextClick() {
+function getNextMovement() {
     let resolvePromise;
     let promise = new Promise((resolve) => {
         resolvePromise = resolve;
     });
   
-    document.addEventListener("pointerdown", (event) => {
+    document.addEventListener("pointermove", (event) => {
         resolvePromise(event);
     }, { once: true });
   
@@ -23,10 +23,10 @@ async function startCalibration(event) {
 
     let deltas = [];
     for (let currentStep = startStep; currentStep <= endStep; currentStep++) {
-        let originClick = await getNextClick();
-        let endClick = await getNextClick();
+        let originMovement = await getNextMovement();
+        let endMovement = await getNextMovement();
 
-        let deltaX = endClick.clientX - originClick.clientX;
+        let deltaX = endMovement.movementX;
 
         deltas.push({currentStep, deltaX});
         outputParagraph.textContent = `${currentStep}/${endStep - startStep}`;
