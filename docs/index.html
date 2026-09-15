@@ -1,16 +1,15 @@
 <html>
 <head>
     <title>Pico Remote Calibrator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <script src="main.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="root">
-        <div class="fit-container main-color">
-            <button id="calibration-btn">Start Calibration</button>
-            <p>Output:</p>
-            <p style="white-space: pre-line;" id="output"></p>
-        </div>
+    <div style="background-color: #18191b" id="root">
+        <button style="height:50px" id="calibration-btn">Start Calibration</button>
+        <p>Output:</p>
+        <p style="color: #fff"; white-space: pre-line;" id="output"></p>
     </div>
 </body>
 </html>

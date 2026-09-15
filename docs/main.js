@@ -3,16 +3,24 @@ const calibrationButton = document.getElementById("calibration-btn")
 const outputParagraph = document.getElementById("output");
 
 function getNextMovement() {
-    let resolvePromise;
-    let promise = new Promise((resolve) => {
-        resolvePromise = resolve;
+    return new Promise((resolve) => {
+        document.addEventListener("pointermove", (event) => resolve(event), { once: true });
     });
-  
-    document.addEventListener("pointermove", (event) => {
-        resolvePromise(event);
-    }, { once: true });
-  
-    return promise;
+}
+function downloadCsv(fileName, fileContent) {
+    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = fileName;
+
+      
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(downloadLink.href);
+
 }
 async function startCalibration(event) {
     event.stopPropagation();
@@ -23,17 +31,18 @@ async function startCalibration(event) {
 
     let deltas = [];
     for (let currentStep = startStep; currentStep <= endStep; currentStep++) {
+        outputParagraph.textContent = `${currentStep}/${endStep - startStep + 1}`;
         let originMovement = await getNextMovement();
         let endMovement = await getNextMovement();
 
-        let deltaX = endMovement.movementX;
+        let delta = endMovement.movementX
 
-        deltas.push({currentStep, deltaX});
-        outputParagraph.textContent = `${currentStep}/${endStep - startStep}`;
+        deltas.push({currentStep, delta});
     };
-    outputParagraph.textContent = JSON.stringify(deltas).replaceAll("},","}\n");
-
+    let fileContent = "CurrentStep,MouseDelta\n";
+    fileContent += deltas.map((entry) => `${entry.currentStep},${entry.delta}`).join("\n");
     console.log(deltas);
+    downloadCsv("data.csv", fileContent);
 }
 
 
