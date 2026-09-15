@@ -2,40 +2,25 @@ const root = document.getElementById("root");
 const calibrationButton = document.getElementById("calibration-btn")
 const outputParagraph = document.getElementById("output");
 
-function enableFullscreen() {
-    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-    if (isFullscreen)
-        return;
-    if (root.requestFullscreen)
-        root.requestFullscreen();
-    else if (root.webkitRequestFullscreen)
-        root.webkitRequestFullscreen();
-}
-function disableFullscreen() {
-    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-    if (!isFullscreen)
-        return;
-    if (document.exitFullscreen)
-        document.exitFullscreen();
-    else if (document.webkitExitFullscreen)
-        document.webkitExitFullscreen();
-}
 function getNextClick() {
     let resolvePromise;
     let promise = new Promise((resolve) => {
         resolvePromise = resolve;
     });
   
-    document.addEventListener("mousedown", (event) => {
+    document.addEventListener("pointerdown", (event) => {
         resolvePromise(event);
     }, { once: true });
   
     return promise;
 }
-async function startCalibration() {
+async function startCalibration(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
     const startStep = 1;
     const endStep = 127;
-    enableFullscreen();
+
     let deltas = [];
     for (let currentStep = startStep; currentStep <= endStep; currentStep++) {
         let originClick = await getNextClick();
@@ -44,9 +29,10 @@ async function startCalibration() {
         let deltaX = endClick.clientX - originClick.clientX;
 
         deltas.push({currentStep, deltaX});
+        outputParagraph.textContent = `${currentStep}/${endStep - startStep}`;
     };
-    outputParagraph.textContent = JSON.stringify(deltas).replaceAll("},", "}\n");
-    disableFullscreen();
+    outputParagraph.textContent = JSON.stringify(deltas).replaceAll("},","}\n");
+
     console.log(deltas);
 }
 
