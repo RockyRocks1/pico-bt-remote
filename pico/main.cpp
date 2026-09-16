@@ -1,4 +1,5 @@
 #include "pico/stdio.h"
+#include "ConfigManager.hpp"
 #include "BleManager.hpp"
 #include "InputManager.hpp"
 #include "UsbStreamListener.hpp"
@@ -9,7 +10,8 @@ int main() {
     if (cyw43_arch_init())
         return -1;
 
-    InputManager inputManager;
+    ConfigManager configManager;
+    InputManager inputManager(&configManager);
     UsbStreamListener usbStreamListener;
     BleManager* bleManager = BleManager::GetInstance();
 

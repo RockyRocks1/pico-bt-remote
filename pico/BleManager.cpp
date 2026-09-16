@@ -70,9 +70,9 @@ void BleManager::SendMouseReport(MousePayload& mouse) {
 
     uint8_t report[4] = {
         mouse.buttonMask,
-        static_cast<uint8_t>(mouse.relativeX),
-        static_cast<uint8_t>(mouse.relativeY),
-        static_cast<uint8_t>(mouse.relativeWheel)
+        static_cast<uint8_t>(mouse.dx),
+        static_cast<uint8_t>(mouse.dy),
+        static_cast<uint8_t>(mouse.dWheel)
     };
     hids_device_send_input_report(m_hidCid, report, sizeof(report));
     m_canSend = false;

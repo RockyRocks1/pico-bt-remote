@@ -2,6 +2,8 @@
 #include <iostream>
 #include <thread>
 
+const double DELTA_TO_PIXEL = 2.786;
+
 void StartCalibrationTest(UsbStreamWriter& writer) {
     const int startStep = 1;
     const int endStep = 127;
@@ -10,13 +12,13 @@ void StartCalibrationTest(UsbStreamWriter& writer) {
         UsbPacket mousePacket{};
         mousePacket.command = CMD_MOUSE_REPORT;
         mousePacket.data.mouse.buttonMask = 0;
-        mousePacket.data.mouse.relativeY = 0;
+        mousePacket.data.mouse.dy = 0;
 
-        mousePacket.data.mouse.relativeX = -endStep;
+        mousePacket.data.mouse.dx = -endStep;
         writer.Write(mousePacket);
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     
-        mousePacket.data.mouse.relativeX = currentStep;
+        mousePacket.data.mouse.dx = currentStep;
         writer.Write(mousePacket);
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
     };
@@ -37,6 +39,12 @@ int main() {
     GetCursorPos(&previousPoint);
     char startTestButton = 'T';
     bool isStartTestButtonHeld = false;
+    ConfigPayload hi{};
+    hi.maxDelta = 100;
+    UsbPacket configPacket{};
+    configPacket.command = CMD_SET_CONFIG;
+    configPacket.data.config = hi;
+    writer.Write(configPacket);
     while (true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if (GetAsyncKeyState(startTestButton) & 0x8000) {
@@ -60,11 +68,12 @@ int main() {
         if (deltaX != 0 || deltaY != 0) {
             UsbPacket packet{};
             packet.command = CMD_MOUSE_REPORT;
-            packet.data.mouse.relativeX = deltaX;
-            packet.data.mouse.relativeY = deltaY;
+            packet.data.mouse.dx = deltaX;
+            packet.data.mouse.dy = deltaY;
 
             writer.Write(packet);
         }
+
         previousPoint = currentPoint;
         
     }
