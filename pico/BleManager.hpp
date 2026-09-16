@@ -12,7 +12,7 @@
 #include "ble/gatt-service/device_information_service_server.h"
 #include "pico_remote.h"
 
-#include "shared/shared.h"
+#include "shared.h"
 #include "InputManager.hpp"
 
 class BleManager {

@@ -1,5 +1,6 @@
 #include "BleManager.hpp"
 
+ // temporary, from the btstack example
 static const uint8_t hidReportDescriptor[] = {
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
     0x09, 0x02,                    // USAGE (Mouse)
@@ -28,7 +29,7 @@ static const uint8_t hidReportDescriptor[] = {
     0x81, 0x06,                    //     INPUT (Data,Var,Rel)
     0xc0,                          //   END_COLLECTION
     0xc0
-}; // temporary, from the btstack example
+};
 
 // also temporary
 static btstack_packet_callback_registration_t hci_event_callback_registration;

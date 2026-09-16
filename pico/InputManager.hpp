@@ -1,5 +1,5 @@
 #pragma once
-#include "shared/shared.h"
+#include "shared.h"
 #include "ConfigManager.hpp"
 #include "pico/mutex.h"
 #include <deque>

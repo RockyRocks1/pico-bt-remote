@@ -1,11 +1,6 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.27)
 
-include(pico_sdk_import.cmake)
-
-project(pico-bt-remote C CXX ASM)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-pico_sdk_init()
+project(pico-bt-remote-pico C CXX ASM)
 
 add_executable(${PROJECT_NAME}
     main.cpp
@@ -15,7 +10,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../shared
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 target_link_libraries(${PROJECT_NAME} 

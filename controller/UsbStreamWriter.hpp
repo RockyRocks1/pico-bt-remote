@@ -1,7 +1,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <string>
-#include "shared/shared.h"
+#include "shared.h"
 
 class UsbStreamWriter {
 public:

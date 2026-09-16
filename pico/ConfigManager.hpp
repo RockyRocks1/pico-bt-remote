@@ -1,5 +1,5 @@
 #pragma once
-#include "shared/shared.h"
+#include "shared.h"
 
 class ConfigManager {
 public:
