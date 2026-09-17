@@ -3,7 +3,10 @@
 
 class ConfigManager {
 public:
-    ConfigManager() {};
+    ConfigManager() {
+        // Some default values
+        m_currentConfig.maxDelta = 127;
+    };
     inline void UpdateConfig(const ConfigPayload& newConfig) {
         m_currentConfig = newConfig;
     };

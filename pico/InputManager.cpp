@@ -33,21 +33,19 @@ void InputManager::ProcessMousePayload(MousePayload& mouse) {
 		UsbPacket packet{};
 		packet.command = DeviceCommand::CMD_MOUSE_REPORT;
 		packet.data.mouse = trueMouse;
-		m_packetQueue.push_back(packet);
+		m_packetQueue.PushBack(packet);
 	} while (accumulativeX != 0 || accumulativeY != 0);
 }
 void InputManager::ProcessKeyboardPayload(KeyboardPayload& keyboard) {
 	UsbPacket packet{};
 	packet.command = DeviceCommand::CMD_KEYBOARD_REPORT;
 	packet.data.keyboard = keyboard;
-	m_packetQueue.push_back(packet);
+	m_packetQueue.PushBack(packet);
 }
 void InputManager::ProcessConfigPayload(ConfigPayload& config) {
 	m_configManager->UpdateConfig(config);
 }
 void InputManager::ProcessUsbPacket(UsbPacket& packet) {
-	mutex_enter_blocking(&m_queueMutex);
-
 	switch (packet.command) {
 	case CMD_KEYBOARD_REPORT:
 		ProcessKeyboardPayload(packet.data.keyboard);
@@ -61,17 +59,10 @@ void InputManager::ProcessUsbPacket(UsbPacket& packet) {
 	default:
 		break;
 	}
-	mutex_exit(&m_queueMutex);
 }
 std::optional<UsbPacket> InputManager::GetNextPacket() {
-	mutex_enter_blocking(&m_queueMutex);
-	if (m_packetQueue.empty()) {
-		mutex_exit(&m_queueMutex);
+	if (m_packetQueue.IsEmpty()) 
 		return std::nullopt;
-	}
 
-	UsbPacket packet = std::move(m_packetQueue.front());
-	m_packetQueue.pop_front();
-	mutex_exit(&m_queueMutex);
-	return packet;
+	return m_packetQueue.PopFront();
 }

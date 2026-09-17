@@ -36,7 +36,7 @@ struct KeyboardPayload {
 };
 struct ConfigPayload {
     //uint16_t scale = 2708;
-    int8_t maxDelta = 127;
+    int8_t maxDelta;
     uint8_t reserved[7];
 };
 union HidPayload {
