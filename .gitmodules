@@ -1,0 +1,3 @@
+[submodule "host/openpnp-capture"]
+	path = host/openpnp-capture
+	url = https://github.com/openpnp/openpnp-capture
