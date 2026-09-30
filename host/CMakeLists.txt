@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 
-project(pico-bt-remote-controller C CXX)
+project(pico-bt-remote-host C CXX)
 
 add_executable(${PROJECT_NAME}
     UsbStreamWriter.cpp

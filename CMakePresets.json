@@ -23,12 +23,12 @@
       }
     },
     {
-      "name": "controller-config",
+      "name": "host-config",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/controller",
+      "binaryDir": "${sourceDir}/out/host",
       "cacheVariables": {
         "BUILD_PICO_TARGET": "OFF",
-        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/out/controller",
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/out/host",
         "CMAKE_CXX_STANDARD": "20",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON"
       }
@@ -36,8 +36,8 @@
   ],
   "buildPresets": [
     {
-      "name": "controller-build",
-      "configurePreset": "controller-config"
+      "name": "host-build",
+      "configurePreset": "host-config"
     },
     {
       "name": "pico-build",
@@ -46,15 +46,15 @@
   ],
   "workflowPresets": [
     {
-      "name": "build-controller",
+      "name": "build-host",
       "steps": [
         {
           "type": "configure",
-          "name": "controller-config"
+          "name": "host-config"
         },
         {
           "type": "build",
-          "name": "controller-build"
+          "name": "host-build"
         }
       ]
     },
