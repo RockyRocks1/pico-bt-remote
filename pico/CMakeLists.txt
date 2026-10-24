@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.27)
 
+if(BUILD_PICO_TARGET)
+    include(pico_sdk_import.cmake)
+endif()
+
 project(pico-bt-remote-pico C CXX ASM)
+
+pico_sdk_init()
 
 add_executable(${PROJECT_NAME}
     main.cpp

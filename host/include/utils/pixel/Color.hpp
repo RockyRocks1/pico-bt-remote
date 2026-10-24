@@ -32,9 +32,9 @@ inline bool ColorRgba::IsCloseTo(const T& other, int variation) const {
     if (variation == 0)
         return *this == other;
 
-    return std::abs(static_cast<int>(r) - other.r) <= variation &&
-        std::abs(static_cast<int>(g) - other.g) <= variation &&
-        std::abs(static_cast<int>(b) - other.b) <= variation;
+    return abs(static_cast<int>(r) - other.r) <= variation &&
+        abs(static_cast<int>(g) - other.g) <= variation &&
+        abs(static_cast<int>(b) - other.b) <= variation;
 }
 inline bool ColorRgba::operator==(const ColorBgra& other) const {
     return r == other.r && g == other.g && b == other.b;

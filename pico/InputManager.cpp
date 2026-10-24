@@ -27,8 +27,7 @@ void InputManager::ProcessMousePayload(MousePayload& mouse) {
 		MousePayload trueMouse = {
 			.buttonMask = mouse.buttonMask,
 			.dx = dx,
-			.dy = dy,
-			.dWheel = mouse.dWheel
+			.dy = dy
 		};
 		UsbPacket packet{};
 		packet.command = DeviceCommand::CMD_MOUSE_REPORT;

@@ -21,11 +21,10 @@ static const uint8_t hidReportDescriptor[] = {
     0x05, 0x01,         //          USAGE_PAGE (Generic Desktop)
     0x09, 0x30,         //          USAGE (X)
     0x09, 0x31,         //          USAGE (Y)
-    0x09, 0x38,         //          USAGE (WHEEL)
     0x15, 0x81,         //          LOGICAL_MINIMUM (-127)
     0x25, 0x7f,         //          LOGICAL_MAXIMUM (127)
     0x75, 0x08,         //          REPORT_SIZE (8)
-    0x95, 0x02,         //          REPORT_COUNT (3)
+    0x95, 0x02,         //          REPORT_COUNT (2)
     0x81, 0x06,         //          INPUT (Data,Var,Rel)
     0xc0,               //      END_COLLECTION
     0xc0,               //  END_COLLECTION
@@ -61,8 +60,7 @@ static const uint8_t hidReportDescriptor[] = {
     0x19, 0x00,         //      USAGE_MINIMUM (Reserved (no event indicated))
     0x29, 0xff,         //      USAGE_MAXIMUM (Reserved)
     0x81, 0x00,         //      INPUT (Data, Array)
-    0xc0,               //  END_COLLECTION
-
+    0xc0               //  END_COLLECTION
 };
 
 // also temporary
@@ -103,22 +101,19 @@ void BleManager::SendMouseReport(MousePayload& mouse) {
     if (m_hidCid == HCI_CON_HANDLE_INVALID)
         return;
 
-    uint8_t report[5] = {
-        0x01,
+    uint8_t report[3] = {
         mouse.buttonMask,
         static_cast<uint8_t>(mouse.dx),
         static_cast<uint8_t>(mouse.dy),
-        static_cast<uint8_t>(mouse.dWheel)
     };
-    hids_device_send_input_report(m_hidCid, report, sizeof(report));
+    hids_device_send_input_report_for_id(m_hidCid, 0x01, report, sizeof(report));
     m_canSend = false;
 }
 void BleManager::SendKeyboardReport(KeyboardPayload& keyboard) {
     if (m_hidCid == HCI_CON_HANDLE_INVALID)
         return;
 
-    uint8_t report[9] = {
-        0x02,
+    uint8_t report[8] = {
         keyboard.modifierMask,
         keyboard.reserved,
         keyboard.keys[0],
@@ -129,7 +124,7 @@ void BleManager::SendKeyboardReport(KeyboardPayload& keyboard) {
         keyboard.keys[5]
     };
 
-    hids_device_send_input_report(m_hidCid, report, sizeof(report));
+    hids_device_send_input_report_for_id(m_hidCid, 0x02, report, sizeof(report));
 }
 void BleManager::SendReportFromPacket(UsbPacket& packet) {
     if (m_hidCid == HCI_CON_HANDLE_INVALID)
@@ -137,8 +132,10 @@ void BleManager::SendReportFromPacket(UsbPacket& packet) {
     switch (packet.command) {
     case CMD_KEYBOARD_REPORT:
         SendKeyboardReport(packet.data.keyboard);
+        break;
     case CMD_MOUSE_REPORT:
         SendMouseReport(packet.data.mouse);
+        break;
     default:
         break;
     }
@@ -196,7 +193,7 @@ void BleManager::StartAdvertising() {
         0x02, BLUETOOTH_DATA_TYPE_FLAGS, 0x06,
         0x0C, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'P', 'i', 'c', 'o', ' ', 'R', 'e', 'm', 'o', 't', 'e',
         0x03, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS, ORG_BLUETOOTH_SERVICE_HUMAN_INTERFACE_DEVICE & 0xFF, ORG_BLUETOOTH_SERVICE_HUMAN_INTERFACE_DEVICE >> 8,
-        0x03, BLUETOOTH_DATA_TYPE_APPEARANCE, 0xC2, 0x02
+        0x03, BLUETOOTH_DATA_TYPE_APPEARANCE, 0xC0, 0x03
     };
     bd_addr_t nullAddress;
     memset(nullAddress, 0, 6);
@@ -208,7 +205,7 @@ void BleManager::StartAdvertising() {
 void BleManager::PollBluetooth() {
     cyw43_bluetooth_hci_process();
     cyw43_arch_poll();
-    
+
     if (!m_inputManager->IsPacketQueueEmpty() && m_canSend && m_hidCid != HCI_CON_HANDLE_INVALID) {
         m_canSend = false;
         hids_device_request_can_send_now_event(m_hidCid);

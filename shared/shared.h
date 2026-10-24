@@ -26,8 +26,7 @@ struct MousePayload {
     uint8_t buttonMask;
     int16_t dx;
     int16_t dy;
-    int8_t dWheel;
-    uint8_t reserved[2];
+    uint8_t reserved[1];
 };
 struct KeyboardPayload {
     uint8_t modifierMask;

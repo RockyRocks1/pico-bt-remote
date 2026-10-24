@@ -4,7 +4,7 @@ template<typename Func>
 bool PixelModifier::Map1to1(const FrameView& sourceView, FrameBuffer& destBuffer, Func iteratorFunction) {
 	if (sourceView.width != destBuffer.width || sourceView.height != destBuffer.height)
 		return false;
-	if (!sourceView.data || !destBuffer.data.data())
+	if (!sourceView.data || !destBuffer.data.get())
 		return false;
 
 	const uint32_t sourceBytesPerPixel = sourceView.GetBytesPerPixel();
@@ -12,7 +12,7 @@ bool PixelModifier::Map1to1(const FrameView& sourceView, FrameBuffer& destBuffer
 
 	for (int y = 0; y < sourceView.height; y++) {
 		const uint8_t* pSourceRow = static_cast<const uint8_t*>(sourceView.data.get() + sourceView.width * y);
-		uint8_t* pDestRow = destBuffer.data.data() + destBuffer.width * y;
+		uint8_t* pDestRow = destBuffer.data.get() + destBuffer.width * y;
 
 		const uint8_t* pSourcePixel = pSourceRow;
 		uint8_t* pDestPixel = pDestRow;
